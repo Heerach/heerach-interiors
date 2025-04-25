@@ -116,9 +116,9 @@ const App = () => {
       <section className="manager-contact">
         <h2>Our Managers</h2>
         <ul>
-          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
-          <li><strong>Ms. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Mr. Siri </strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 987654321, 📍 Bangalore</li>
+          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 912345678, 📍 Mumbai</li>
+          <li><strong>Mr. Mahesh </strong> - 📞 +91 998877665, 📍 Hyderabad</li>
         </ul>
       </section>
 

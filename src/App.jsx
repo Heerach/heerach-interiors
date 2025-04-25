@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';  
 import './App.css';
 import firebase from './firebaseConfig'; // Make sure firebase is configured properly
+import AuthComponent from './AuthComponent'; // add this at top
+
+<AuthComponent /> // place this in JSX
 
 const styleImages = {
   Modern: [
@@ -33,6 +36,7 @@ const App = () => {
     const unsubscribe = firebase.auth().onAuthStateChanged(setUser);
     return unsubscribe;
   }, []);
+  
 
   // Sign in with Google
   const signInWithGoogle = async () => {

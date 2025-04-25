@@ -2,7 +2,7 @@
 import React from 'react';
 import Gallery from './Gallery';
 import ImageUpload from './ImageUpload';
-import Auth from './Auth';
+import AuthComponent from './AuthComponent';
 
 const App = () => {
   return (

@@ -1,9 +1,43 @@
-import React, { useState, useEffect } from 'react';  
+/*import React, { useState, useEffect } from 'react';
 import './App.css';
-import firebase from './firebaseConfig'; // Make sure firebase is configured properly
-import AuthComponent from './AuthComponent'; // add this at top
+import { auth, storage, firebase } from './firebaseConfig';
+import AuthComponent from './AuthComponent';
+import Gallery from './Gallery';
+import ImageUpload from './ImageUpload';
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getAuth } from 'firebase/auth';*/
 
-<AuthComponent /> // place this in JSX
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from "firebase/analytics";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut
+} from 'firebase/auth';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL
+} from 'firebase/storage';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyClBA1_h7NiOhK6a3uh4gSuUGZmbCm1iCA",
+  authDomain: "heerach-495f1.firebaseapp.com",
+  projectId: "heerach-495f1",
+  storageBucket: "heerach-495f1.appspot.com",
+  messagingSenderId: "933639217329",
+  appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
+  measurementId: "G-M8TTNGJNFB"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
 
 const styleImages = {
   Modern: [
@@ -28,54 +62,11 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [user, setUser] = useState(null);
-  const [image, setImage] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
-  // Firebase Authentication state listener
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(setUser);
-    return unsubscribe;
+    const unsubscribe = onAuthStateChanged(auth, setUser);
+    return () => unsubscribe();
   }, []);
-  
-
-  // Sign in with Google
-  const signInWithGoogle = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await firebase.auth().signInWithPopup(provider);
-  };
-
-  // Sign out
-  const signOut = async () => {
-    await firebase.auth().signOut();
-  };
-
-  // Handle image selection
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setImage(file);
-  };
-
-  // Handle image upload
-  const handleImageUpload = () => {
-    if (!image) return;
-    
-    const uploadTask = firebase.storage().ref(`images/${image.name}`).put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {
-        firebase.storage().ref("images").child(image.name).getDownloadURL().then((url) => {
-          console.log("File available at", url);
-        });
-      }
-    );
-  };
 
   const scrollToContact = () => {
     const section = document.getElementById("contact");
@@ -134,27 +125,6 @@ const App = () => {
         )}
       </section>
 
-      {/* Firebase Authentication Section */}
-      <section className="auth-section">
-        <h2>Firebase Authentication</h2>
-        {user ? (
-          <div>
-            <p>Welcome, {user.displayName}</p>
-            <button onClick={signOut}>Sign Out</button>
-          </div>
-        ) : (
-          <button onClick={signInWithGoogle}>Sign In with Google</button>
-        )}
-      </section>
-
-      {/* Firebase Image Upload Section */}
-      <section className="image-upload">
-        <h2>Upload Image to Firebase</h2>
-        <input type="file" onChange={handleFileChange} />
-        <button onClick={handleImageUpload}>Upload</button>
-        <p>Upload Progress: {uploadProgress}%</p>
-      </section>
-
       <section id="why" className="why-heerach">
         <h2>Why Choose Heerach?</h2>
         <ul>
@@ -169,8 +139,8 @@ const App = () => {
         <h2>Gallery</h2>
         <div className="gallery-grid">
           <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80" alt="Gallery 1" />
-          <img src="https://plus.unsplash.com/premium_photo-1670359039073-90ded4b26501?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=800&q=80" alt="Gallery 2" />
-          <img src="https://plus.unsplash.com/premium_photo-1687995672988-be514f56428e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=800&q=80" alt="Gallery 3" />
+          <img src="https://plus.unsplash.com/premium_photo-1670359039073-90ded4b26501?q=80&w=1470&auto=format&fit=crop" alt="Gallery 2" />
+          <img src="https://plus.unsplash.com/premium_photo-1687995672988-be514f56428e?q=80&w=1470&auto=format&fit=crop" alt="Gallery 3" />
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Gallery 4" />
         </div>
       </section>
@@ -190,9 +160,9 @@ const App = () => {
       <section className="manager-contact">
         <h2>Our Managers</h2>
         <ul>
-          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 987654321, 📍 Bangalore</li>
-          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 912345678, 📍 Mumbai</li>
-          <li><strong>Mr. Mahesh </strong> - 📞 +91 998877665, 📍 Hyderabad</li>
+          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
+          <li><strong>Ms. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
+          <li><strong>Mr. Siri </strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
         </ul>
       </section>
 

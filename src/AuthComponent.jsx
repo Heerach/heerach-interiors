@@ -126,10 +126,10 @@ const AuthComponent = () => {
   );
 };
 
-export default AuthComponent;*/
+export default AuthComponent;
 // src/AuthComponent.jsx
 import React, { useState, useEffect } from 'react';
-import { auth } from './firebase';
+import { auth } from './firebaseConfig';
 
 const AuthComponent = () => {
   const [user, setUser] = useState(null);
@@ -188,6 +188,52 @@ const AuthComponent = () => {
   );
 };
 
+export default AuthComponent;*/
+
+// AuthComponent.jsx
+import React, { useEffect, useState } from 'react';
+import { auth, firebase } from './firebaseConfig';
+
+const AuthComponent = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(setUser);
+    return () => unsubscribe(); // Cleanup listener
+  }, []);
+
+  const signInWithGoogle = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await auth.signInWithPopup(provider);
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error('Sign-Out Error:', error);
+    }
+  };
+
+  return (
+    <div className="auth-section">
+      {user ? (
+        <div>
+          <p>Welcome, <strong>{user.displayName}</strong></p>
+          <button onClick={signOut}>Sign Out</button>
+        </div>
+      ) : (
+        <button onClick={signInWithGoogle}>Sign In with Google</button>
+      )}
+    </div>
+  );
+};
+
 export default AuthComponent;
+
 
 

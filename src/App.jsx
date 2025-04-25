@@ -23,25 +23,8 @@ import {
   uploadBytesResumable,
   getDownloadURL
 } from 'firebase/storage';
-import HeroBanner from './components/HeroBanner';
-import DesignStyles from './components/DesignStyles';
-import Gallery from './components/Gallery';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-function App() {
-  return (
-    <div>
-      <HeroBanner />
-      <DesignStyles />
-      <Gallery />
-      <Contact />
-      <Footer />
-      {/* Add DesignStyles, Gallery, Contact, Footer here */}
-    </div>
-  );
-}
 
-//export default App;
+  
 
 
 const firebaseConfig = {

@@ -28,7 +28,7 @@ const Gallery = () => {
 
 export default Gallery;*/
 // src/Gallery.jsx
-/*import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { firestore } from './firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -67,10 +67,10 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;*/
+export default Gallery;
 
 // src/components/Gallery.jsx
-const galleryItems = [
+/*const galleryItems = [
   { title: 'Living Room Makeover', image: '/assets/images/gallery1.jpg' },
   { title: 'Modular Kitchen', image: '/assets/images/gallery2.jpg' },
   { title: 'Elegant Bedroom', image: '/assets/images/gallery3.jpg' },
@@ -95,6 +95,6 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Gallery;*/
 
 

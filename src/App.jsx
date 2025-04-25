@@ -1,8 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import './App.css';
+
+const styleImages = {
+  Modern: [
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1588854337236-f44f644013b7?auto=format&fit=crop&w=800&q=80'
+  ],
+  Traditional: [
+    'https://images.unsplash.com/photo-1600573472534-69b2231d1e8b?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80'
+  ],
+  Minimalist: [
+    'https://images.unsplash.com/photo-1617806113683-6eeda5600653?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1615873968403-fd51f8c70c7f?auto=format&fit=crop&w=800&q=80'
+  ],
+  Industrial: [
+    'https://images.unsplash.com/photo-1617104674894-63a7e26b55a7?auto=format&fit=crop&w=800&q=80',
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+  ]
+};
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState(null);
 
   const scrollToContact = () => {
     const section = document.getElementById("contact");
@@ -39,23 +59,26 @@ const App = () => {
       <section id="designs" className="designs">
         <h2>Our Design Styles</h2>
         <div className="styles-grid">
-          <div className="style-card">
-            <h3>Modern</h3>
-            <p>Sleek, clean lines with contemporary finishes and smart functionality.</p>
-          </div>
-          <div className="style-card">
-            <h3>Traditional</h3>
-            <p>Warm tones, detailed woodwork, and timeless elegance rooted in culture.</p>
-          </div>
-          <div className="style-card">
-            <h3>Minimalist</h3>
-            <p>Simple and clutter-free designs for a calm, open, and airy space.</p>
-          </div>
-          <div className="style-card">
-            <h3>Industrial</h3>
-            <p>Raw textures, exposed brick, and metallic finishes for a rugged vibe.</p>
-          </div>
+          {Object.keys(styleImages).map(style => (
+            <div key={style} className="style-card" onClick={() => setSelectedStyle(style)}>
+              <h3>{style}</h3>
+              <p>{style === 'Modern' && 'Sleek, clean lines with contemporary finishes and smart functionality.'}
+                {style === 'Traditional' && 'Warm tones, detailed woodwork, and timeless elegance rooted in culture.'}
+                {style === 'Minimalist' && 'Simple and clutter-free designs for a calm, open, and airy space.'}
+                {style === 'Industrial' && 'Raw textures, exposed brick, and metallic finishes for a rugged vibe.'}</p>
+            </div>
+          ))}
         </div>
+        {selectedStyle && (
+          <div className="style-gallery">
+            <h3>{selectedStyle} Style Inspirations</h3>
+            <div className="gallery-grid">
+              {styleImages[selectedStyle].map((img, i) => (
+                <img key={i} src={img} alt={`${selectedStyle} ${i + 1}`} />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <section id="why" className="why-heerach">
@@ -72,8 +95,8 @@ const App = () => {
         <h2>Gallery</h2>
         <div className="gallery-grid">
           <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80" alt="Gallery 1" />
-          <img src="https://images.unsplash.com/photo-1588854337236-f44f644013b7?auto=format&fit=crop&w=800&q=80" alt="Gallery 2" />
-          <img src="https://images.unsplash.com/photo-1622650247048-b98c7e3619a2?auto=format&fit=crop&w=800&q=80" alt="Gallery 3" />
+          <img src="https://plus.unsplash.com/premium_photo-1670359039073-90ded4b26501?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=800&q=80" alt="Gallery 2" />
+          <img src="https://plus.unsplash.com/premium_photo-1687995672988-be514f56428e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?auto=format&fit=crop&w=800&q=80" alt="Gallery 3" />
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Gallery 4" />
         </div>
       </section>
@@ -93,9 +116,9 @@ const App = () => {
       <section className="manager-contact">
         <h2>Our Managers</h2>
         <ul>
-          <li><strong>Mr. Rakesh Mehta</strong> - 📞 +91 98765 43210, 📍 Bangalore</li>
-          <li><strong>Ms. Priya Desai</strong> - 📞 +91 91234 56789, 📍 Mumbai</li>
-          <li><strong>Mr. Amit Verma</strong> - 📞 +91 99887 76655, 📍 Hyderabad</li>
+          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
+          <li><strong>Ms. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
+          <li><strong>Mr. Siri </strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
         </ul>
       </section>
 

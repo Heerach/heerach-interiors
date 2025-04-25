@@ -1,5 +1,6 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react';  
 import './App.css';
+import firebase from './firebaseConfig'; // Make sure firebase is configured properly
 
 const styleImages = {
   Modern: [
@@ -23,6 +24,54 @@ const styleImages = {
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(null);
+  const [user, setUser] = useState(null);
+  const [image, setImage] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  // Firebase Authentication state listener
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(setUser);
+    return unsubscribe;
+  }, []);
+
+  // Sign in with Google
+  const signInWithGoogle = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await firebase.auth().signInWithPopup(provider);
+  };
+
+  // Sign out
+  const signOut = async () => {
+    await firebase.auth().signOut();
+  };
+
+  // Handle image selection
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) setImage(file);
+  };
+
+  // Handle image upload
+  const handleImageUpload = () => {
+    if (!image) return;
+    
+    const uploadTask = firebase.storage().ref(`images/${image.name}`).put(image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error(error);
+      },
+      () => {
+        firebase.storage().ref("images").child(image.name).getDownloadURL().then((url) => {
+          console.log("File available at", url);
+        });
+      }
+    );
+  };
 
   const scrollToContact = () => {
     const section = document.getElementById("contact");
@@ -79,6 +128,27 @@ const App = () => {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Firebase Authentication Section */}
+      <section className="auth-section">
+        <h2>Firebase Authentication</h2>
+        {user ? (
+          <div>
+            <p>Welcome, {user.displayName}</p>
+            <button onClick={signOut}>Sign Out</button>
+          </div>
+        ) : (
+          <button onClick={signInWithGoogle}>Sign In with Google</button>
+        )}
+      </section>
+
+      {/* Firebase Image Upload Section */}
+      <section className="image-upload">
+        <h2>Upload Image to Firebase</h2>
+        <input type="file" onChange={handleFileChange} />
+        <button onClick={handleImageUpload}>Upload</button>
+        <p>Upload Progress: {uploadProgress}%</p>
       </section>
 
       <section id="why" className="why-heerach">

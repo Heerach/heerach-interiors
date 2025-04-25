@@ -33,6 +33,22 @@ const firebaseConfig = {
   appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
   measurementId: "G-M8TTNGJNFB"
 };
+const adminEmail = "heerachinteriors@gmail.com";
+
+{user && user.email === adminEmail && (
+  <div className="upload-section">
+    <h3>Upload New Design</h3>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={(e) => setImageFile(e.target.files[0])}
+    />
+    <button onClick={handleUpload} disabled={uploading}>
+      {uploading ? 'Uploading...' : 'Upload'}
+    </button>
+  </div>
+)}
+
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);

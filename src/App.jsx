@@ -4,9 +4,9 @@ import { auth, storage, firebase } from './firebaseConfig';
 import AuthComponent from './AuthComponent';
 import Gallery from './Gallery';
 import ImageUpload from './ImageUpload';
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getAuth } from 'firebase/auth';*/
-
-import React, { useState, useEffect } from 'react';
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getAuth } from 'firebase/auth';
+*/
+import React, { useState, useEffect } from 'react'; 
 import './App.css';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from "firebase/analytics";
@@ -24,14 +24,11 @@ import {
   getDownloadURL
 } from 'firebase/storage';
 
-  
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyClBA1_h7NiOhK6a3uh4gSuUGZmbCm1iCA",
   authDomain: "heerach-495f1.firebaseapp.com",
   projectId: "heerach-495f1",
-  storageBucket: "heerach-495f1.firebasestorage.app",
+  storageBucket: "heerach-495f1.appspot.com",
   messagingSenderId: "933639217329",
   appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
   measurementId: "G-M8TTNGJNFB"
@@ -66,6 +63,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
+  const [darkMode, setDarkMode] = useState(false); // ✅ dark mode state
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser);
@@ -79,11 +77,20 @@ const App = () => {
 
   const handleSignIn = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).catch(console.error);
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        alert(`Welcome, ${result.user.displayName}`);
+      })
+      .catch((error) => {
+        alert("Login failed: " + error.message);
+        console.error(error);
+      });
   };
 
   const handleSignOut = () => {
-    signOut(auth);
+    signOut(auth)
+      .then(() => alert("Signed out successfully"))
+      .catch((err) => console.error("Sign-out error:", err));
   };
 
   const handleUpload = () => {
@@ -92,7 +99,8 @@ const App = () => {
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
     setUploading(true);
 
-    uploadTask.on('state_changed',
+    uploadTask.on(
+      'state_changed',
       () => {},
       (error) => {
         console.error(error);
@@ -120,7 +128,11 @@ const App = () => {
             <li><a href="#why">Why Heerach</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><button onClick={scrollToContact}>Get Consultation</button></li>
-            <li><button onClick={() => setDarkMode(!darkMode)}>{darkMode ? '☀️ Light' : '🌙 Dark'}</button></li>
+            <li>
+              <button onClick={() => setDarkMode(!darkMode)}>
+                {darkMode ? '☀️ Light' : '🌙 Dark'}
+              </button>
+            </li>
             {user ? (
               <li><button onClick={handleSignOut}>Sign Out</button></li>
             ) : (
@@ -209,9 +221,9 @@ const App = () => {
       <section className="manager-contact">
         <h2>Our Managers</h2>
         <ul>
-          <li><strong>Mr. Rupesh Raju </strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
+          <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
           <li><strong>Ms. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Mr. Siri </strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Siri</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
         </ul>
       </section>
 

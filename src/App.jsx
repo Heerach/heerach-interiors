@@ -33,21 +33,6 @@ const firebaseConfig = {
   appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
   measurementId: "G-M8TTNGJNFB"
 };
-const adminEmail = "heerachinteriors@gmail.com";
-
-{user && user.email === adminEmail && (
-  <div className="upload-section">
-    <h3>Upload New Design</h3>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={(e) => setImageFile(e.target.files[0])}
-    />
-    <button onClick={handleUpload} disabled={uploading}>
-      {uploading ? 'Uploading...' : 'Upload'}
-    </button>
-  </div>
-)}
 
 
 const app = initializeApp(firebaseConfig);
@@ -82,7 +67,9 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false); // ✅ dark mode state
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, setUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
     return () => unsubscribe();
   }, []);
 
@@ -93,20 +80,11 @@ const App = () => {
 
   const handleSignIn = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        alert(`Welcome, ${result.user.displayName}`);
-      })
-      .catch((error) => {
-        alert("Login failed: " + error.message);
-        console.error(error);
-      });
+    signInWithPopup(auth, provider).catch(console.error);
   };
 
   const handleSignOut = () => {
-    signOut(auth)
-      .then(() => alert("Signed out successfully"))
-      .catch((err) => console.error("Sign-out error:", err));
+    signOut(auth);
   };
 
   const handleUpload = () => {

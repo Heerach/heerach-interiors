@@ -62,6 +62,8 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState(null);
   const [user, setUser] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser);
@@ -71,6 +73,38 @@ const App = () => {
   const scrollToContact = () => {
     const section = document.getElementById("contact");
     window.scrollTo({ top: section.offsetTop, behavior: "smooth" });
+  };
+
+  const handleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).catch(console.error);
+  };
+
+  const handleSignOut = () => {
+    signOut(auth);
+  };
+
+  const handleUpload = () => {
+    if (!imageFile) return;
+    const storageRef = ref(storage, `designs/${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    setUploading(true);
+
+    uploadTask.on('state_changed',
+      () => {},
+      (error) => {
+        console.error(error);
+        setUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          alert('Image uploaded successfully!');
+          console.log('Download URL:', downloadURL);
+          setUploading(false);
+          setImageFile(null);
+        });
+      }
+    );
   };
 
   return (
@@ -85,6 +119,11 @@ const App = () => {
             <li><a href="#contact">Contact</a></li>
             <li><button onClick={scrollToContact}>Get Consultation</button></li>
             <li><button onClick={() => setDarkMode(!darkMode)}>{darkMode ? '☀️ Light' : '🌙 Dark'}</button></li>
+            {user ? (
+              <li><button onClick={handleSignOut}>Sign Out</button></li>
+            ) : (
+              <li><button onClick={handleSignIn}>Admin Login</button></li>
+            )}
           </ul>
         </nav>
       </header>
@@ -121,6 +160,14 @@ const App = () => {
                 <img key={i} src={img} alt={`${selectedStyle} ${i + 1}`} />
               ))}
             </div>
+          </div>
+        )}
+
+        {user && (
+          <div className="upload-section">
+            <h3>Upload New Design</h3>
+            <input type="file" onChange={(e) => setImageFile(e.target.files[0])} />
+            <button onClick={handleUpload} disabled={uploading}>{uploading ? 'Uploading...' : 'Upload'}</button>
           </div>
         )}
       </section>

@@ -5,13 +5,13 @@ import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signO
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID",
+  apiKey: "AIzaSyClBA1_h7NiOhK6a3uh4gSuUGZmbCm1iCA",  // This is your actual API key
+  authDomain: "heerach-495f1.firebaseapp.com",  // Replace with your Firebase Auth domain (auto-generated)
+  projectId: "heerach-495f1",  // Your Firebase project ID
+  storageBucket: "heerach-495f1.appspot.com",  // Your Firebase Storage Bucket
+  messagingSenderId: "933639217329",  // Your Firebase Messaging Sender ID
+  appId: "1:933639217329:web:b8b17fded3fc7ca8238290",  // Your Firebase App ID
+  measurementId: "G-M8TTNGJNFB",  // Your Firebase Measurement ID (for Google Analytics)
 };
 
 const app = initializeApp(firebaseConfig);
@@ -122,6 +122,43 @@ const App = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const review = e.target.review.value;
+
+    if (!name || !email || !review) {
+      alert('All fields are required.');
+      return;
+    }
+
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, review }),
+      });
+
+      if (response.ok) {
+        alert('Review submitted successfully!');
+        e.target.reset();
+      } else {
+        alert('Failed to submit the review. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
       alert('An error occurred. Please try again later.');
     }
   };

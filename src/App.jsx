@@ -249,7 +249,7 @@ const App = () => {
         <ul>
           <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
           <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Ms. Siri</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Mahesh</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
         </ul>
       </section>
 

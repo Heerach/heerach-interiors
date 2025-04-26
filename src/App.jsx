@@ -33,7 +33,7 @@ const firebaseConfig = {
   appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
   measurementId: "G-M8TTNGJNFB"
 };
-
+<img src="/designs/Modern/m1.jpg" alt="Modern Design 1" />
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -42,6 +42,7 @@ const storage = getStorage(app);
 
 const styleImages = {
   Modern: [
+    
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
     'https://images.unsplash.com/photo-1588854337236-f44f644013b7?auto=format&fit=crop&w=800&q=80'
   ],
@@ -170,6 +171,37 @@ const App = () => {
             </div>
           </div>
         )}
+        {selectedStyle && (
+  <div className="style-gallery">
+    <h3>{selectedStyle} Style Inspirations</h3>
+    <div className="gallery-grid">
+      {selectedStyle === 'Modern' &&
+        [1, 2, 3, 4].map(num => (
+          <img key={num} src={`/designs/modern/m${num}.jpg`} alt={`Modern ${num}`} />
+        ))
+      }
+
+      {selectedStyle === 'Traditional' &&
+        [1, 2].map(num => (
+          <img key={num} src={`/designs/traditional/t${num}.jpg`} alt={`Traditional ${num}`} />
+        ))
+      }
+
+      {selectedStyle === 'Minimalist' &&
+        [1, 2].map(num => (
+          <img key={num} src={`/designs/minimalist/min${num}.jpg`} alt={`Minimalist ${num}`} />
+        ))
+      }
+
+      {selectedStyle === 'Industrial' &&
+        [1, 2].map(num => (
+          <img key={num} src={`/designs/industrial/i${num}.jpg`} alt={`Industrial ${num}`} />
+        ))
+      }
+    </div>
+  </div>
+)}
+
 
         {user && (
           <div className="upload-section">
@@ -216,8 +248,8 @@ const App = () => {
         <h2>Our Managers</h2>
         <ul>
           <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
-          <li><strong>Ms. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Mr. Siri</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
+          <li><strong>Ms. Siri</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
         </ul>
       </section>
 

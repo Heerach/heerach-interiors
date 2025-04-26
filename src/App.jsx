@@ -1,11 +1,3 @@
-/*import React, { useState, useEffect } from 'react';
-import './App.css';
-import { auth, storage, firebase } from './firebaseConfig';
-import AuthComponent from './AuthComponent';
-import Gallery from './Gallery';
-import ImageUpload from './ImageUpload';
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, getAuth } from 'firebase/auth';
-*/
 import React, { useState, useEffect } from 'react'; 
 import './App.css';
 import { initializeApp } from 'firebase/app';
@@ -110,6 +102,24 @@ const App = () => {
         });
       }
     );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+  
+    if (!name) {
+      alert('Name is required.');
+      return;
+    }
+  
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+  
+    alert('Form submitted successfully!');
   };
 
   return (
@@ -225,7 +235,7 @@ const App = () => {
       <section id="gallery" className="gallery">
         <h2>Gallery</h2>
         <div className="gallery-grid">
-        <img src="/designs/Modern/m1.jpg" alt="Gallery 2" />
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Gallery 1" />
         <img src="https://media-hosting.imagekit.io/fef928b97d694009/00190dd1-1c01-42f8-832d-f0153d40a8c2.jpeg?Expires=1840264408&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=TzNE~7nQqEsOSJJ~MNCwgTyS~YGIz79XkN4qWWP1X4wjLpS5jSdzaC-B-IqsVuB~SL1-FozWy8s4RNZfW9sVoR7E~NVH9QqMW5ADPCYz7S75y3VJFi5URM0lH3rEbmnakjFzc~kh6-A3HesPFKyNYGP4dXWoZh3leVypmqSQculy7y3dVS4WC3Sw-weD6cVwTtmlPjke5ZdBDm86-RnJq9Q8M4eMr9QJv~~A81kqBC5hyIHHGQb0ak5sDzYSqqr6bGp83SvWl9dY~biIChvMJo8IVQa-cNxs-Tndzu0NCL0YXsk1dDnp8vODmzLIPGbsGfNiWLFAoSapShBLLnWBoA__" alt="Gallery 1" />
          {/*<img src="https://imagekit.io/tools/asset-public-link?detail=%7B%22name%22%3A%2200190dd1-1c01-42f8-832d-f0153d40a8c2.jpeg%22%2C%22type%22%3A%22image%2Fjpeg%22%2C%22signedurl_expire%22%3A%222028-04-25T08%3A33%3A28.343Z%22%2C%22signedUrl%22%3A%22https%3A%2F%2Fmedia-hosting.imagekit.io%2Ffef928b97d694009%2F00190dd1-1c01-42f8-832d-f0153d40a8c2.jpeg%3FExpires%3D1840264408%26Key-Pair-Id%3DK2ZIVPTIP2VGHC%26Signature%3DTzNE~7nQqEsOSJJ~MNCwgTyS~YGIz79XkN4qWWP1X4wjLpS5jSdzaC-B-IqsVuB~SL1-FozWy8s4RNZfW9sVoR7E~NVH9QqMW5ADPCYz7S75y3VJFi5URM0lH3rEbmnakjFzc~kh6-A3HesPFKyNYGP4dXWoZh3leVypmqSQculy7y3dVS4WC3Sw-weD6cVwTtmlPjke5ZdBDm86-RnJq9Q8M4eMr9QJv~~A81kqBC5hyIHHGQb0ak5sDzYSqqr6bGp83SvWl9dY~biIChvMJo8IVQa-cNxs-Tndzu0NCL0YXsk1dDnp8vODmzLIPGbsGfNiWLFAoSapShBLLnWBoA__%22%7D" alt="Gallery 2" />*/}
           <img src="https://plus.unsplash.com/premium_photo-1670359039073-90ded4b26501?q=80&w=1470&auto=format&fit=crop" alt="Gallery 2" />
@@ -243,6 +253,16 @@ const App = () => {
         <div className="testimonial">
           <p>"Loved the professional approach and speedy delivery. Highly recommend them!"</p>
           <strong>- Riya Kapoor</strong>
+        </div>
+
+        {/* Add a review form */}
+        <div className="review-form">
+          <h3>Leave a Review</h3>
+          <form onSubmit={handleSubmit}>
+            <input type="text" name="name" placeholder="Your Name" />
+            <input type="email" name="email" placeholder="Your Email" />
+            <button type="submit">Submit</button>
+          </form>
         </div>
       </section>
 
@@ -271,5 +291,14 @@ const App = () => {
     </div>
   );
 };
+
+const form = document.querySelector('form');
+form.addEventListener('submit', (e) => {
+  const email = document.querySelector('input[name="email"]').value;
+  if (!email.includes('@')) {
+    e.preventDefault();
+    alert('Please enter a valid email address.');
+  }
+});
 
 export default App;

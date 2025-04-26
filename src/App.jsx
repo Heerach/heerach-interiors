@@ -33,7 +33,7 @@ const firebaseConfig = {
   appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
   measurementId: "G-M8TTNGJNFB"
 };
-<img src="/designs/Modern/m1.jpg" alt="Modern Design 1" />
+<img src="/designs/Modern/m1.jpg" alt="Modern" />
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -225,7 +225,8 @@ const App = () => {
       <section id="gallery" className="gallery">
         <h2>Gallery</h2>
         <div className="gallery-grid">
-          <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80" alt="Gallery 1" />
+        <img src="/designs/Modern/m1.jpg" alt="Gallery 1" />
+         <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80" alt="Gallery 2" />
           <img src="https://plus.unsplash.com/premium_photo-1670359039073-90ded4b26501?q=80&w=1470&auto=format&fit=crop" alt="Gallery 2" />
           <img src="https://plus.unsplash.com/premium_photo-1687995672988-be514f56428e?q=80&w=1470&auto=format&fit=crop" alt="Gallery 3" />
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Gallery 4" />

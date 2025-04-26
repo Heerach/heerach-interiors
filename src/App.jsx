@@ -1,55 +1,40 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from "firebase/analytics";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut
-} from 'firebase/auth';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL
-} from 'firebase/storage';
+import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyClBA1_h7NiOhK6a3uh4gSuUGZmbCm1iCA",
-  authDomain: "heerach-495f1.firebaseapp.com",
-  projectId: "heerach-495f1",
-  storageBucket: "heerach-495f1.appspot.com",
-  messagingSenderId: "933639217329",
-  appId: "1:933639217329:web:b8b17fded3fc7ca8238290",
-  measurementId: "G-M8TTNGJNFB"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID",
 };
-<img src="/designs/Modern/m1.jpg" alt="Modern" />
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
 const styleImages = {
   Modern: [
-    
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1588854337236-f44f644013b7?auto=format&fit=crop&w=800&q=80'
+    'https://images.unsplash.com/photo-1588854337236-f44f644013b7?auto=format&fit=crop&w=800&q=80',
   ],
   Traditional: [
     'https://images.unsplash.com/photo-1600573472534-69b2231d1e8b?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80'
+    'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80',
   ],
   Minimalist: [
     'https://images.unsplash.com/photo-1617806113683-6eeda5600653?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1615873968403-fd51f8c70c7f?auto=format&fit=crop&w=800&q=80'
+    'https://images.unsplash.com/photo-1615873968403-fd51f8c70c7f?auto=format&fit=crop&w=800&q=80',
   ],
   Industrial: [
     'https://images.unsplash.com/photo-1617104674894-63a7e26b55a7?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
-  ]
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+  ],
 };
 
 const App = () => {
@@ -57,7 +42,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-  const [darkMode, setDarkMode] = useState(false); // ✅ dark mode state
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -104,22 +89,36 @@ const App = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
-  
-    if (!name) {
-      alert('Name is required.');
+    const review = e.target.review.value;
+
+    if (!name || !email || !review) {
+      alert('All fields are required.');
       return;
     }
-  
-    if (!email.includes('@')) {
-      alert('Please enter a valid email address.');
-      return;
+
+    try {
+      const response = await fetch('http://localhost:5000/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, review }),
+      });
+
+      if (response.ok) {
+        alert('Review submitted successfully!');
+        e.target.reset();
+      } else {
+        alert('Failed to submit the review. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('An error occurred. Please try again later.');
     }
-  
-    alert('Form submitted successfully!');
   };
 
   return (
@@ -255,13 +254,13 @@ const App = () => {
           <strong>- Riya Kapoor</strong>
         </div>
 
-        {/* Add a review form */}
         <div className="review-form">
           <h3>Leave a Review</h3>
-          <form onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Your Name" />
-            <input type="email" name="email" placeholder="Your Email" />
-            <button type="submit">Submit</button>
+          <form onSubmit={handleReviewSubmit}>
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input type="email" name="email" placeholder="Your Email" required />
+            <textarea name="review" placeholder="Your Review" rows="4" required></textarea>
+            <button type="submit">Submit Review</button>
           </form>
         </div>
       </section>
@@ -291,14 +290,5 @@ const App = () => {
     </div>
   );
 };
-
-const form = document.querySelector('form');
-form.addEventListener('submit', (e) => {
-  const email = document.querySelector('input[name="email"]').value;
-  if (!email.includes('@')) {
-    e.preventDefault();
-    alert('Please enter a valid email address.');
-  }
-});
 
 export default App;

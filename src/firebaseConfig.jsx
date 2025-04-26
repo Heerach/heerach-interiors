@@ -2,6 +2,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/storage'; // Required for file uploads
+import 'firebase/firestore'; // 👈 important
 
 const firebaseConfig = {
   apiKey: "AIzaSyClBA1_h7NiOhK6a3uh4gSuUGZmbCm1iCA",
@@ -19,5 +20,5 @@ const app = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : fir
 // Export auth, storage, and firebase core
 const auth = firebase.auth();
 const storage = firebase.storage();
-
-export { auth, storage, firebase };
+const firestore = firebase.firestore(); // 👈 add this
+export { auth, storage, firebase, firestore };

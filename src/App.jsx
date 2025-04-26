@@ -38,11 +38,11 @@ const styleImages = {
 };
 
 const App = () => {
-  const [selectedStyle, setSelectedStyle] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
   const [user, setUser] = useState(null);
+  const [selectedStyle, setSelectedStyle] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -52,8 +52,8 @@ const App = () => {
   }, []);
 
   const scrollToContact = () => {
-    const section = document.getElementById("contact");
-    window.scrollTo({ top: section.offsetTop, behavior: "smooth" });
+    const section = document.getElementById('contact');
+    window.scrollTo({ top: section.offsetTop, behavior: 'smooth' });
   };
 
   const handleSignIn = () => {
@@ -89,34 +89,39 @@ const App = () => {
     );
   };
 
-  const handleReviewSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
-    const review = e.target.review.value;
+    const phone = e.target.phone.value;
 
-    if (!name || !email || !review) {
+    if (!name || !email || !phone) {
       alert('All fields are required.');
       return;
     }
 
+    if (!email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch('http://localhost:5000/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, review }),
+        body: JSON.stringify({ name, email, phone }),
       });
 
       if (response.ok) {
-        alert('Review submitted successfully!');
+        alert('Form submitted successfully!');
         e.target.reset();
       } else {
-        alert('Failed to submit the review. Please try again.');
+        alert('Failed to submit the form. Please try again.');
       }
     } catch (error) {
-      console.error('Error submitting review:', error);
+      console.error('Error submitting form:', error);
       alert('An error occurred. Please try again later.');
     }
   };
@@ -276,7 +281,7 @@ const App = () => {
 
       <section id="contact" className="contact">
         <h2>Book a Free Consultation</h2>
-        <form action="https://formspree.io/f/xblojbwp" method="POST">
+        <form onSubmit={handleSubmit}>
           <input type="text" name="name" placeholder="Full Name" required />
           <input type="email" name="email" placeholder="Email" required />
           <input type="tel" name="phone" placeholder="Phone Number" required />
@@ -285,20 +290,10 @@ const App = () => {
       </section>
 
       <footer>
-      <footer>
         <p>&copy; 2025 Heerach Interiors | Designed with ❤️</p>
       </footer>
     </div>
   );
 };
-
-const form = document.querySelector('form');
-form.addEventListener('submit', (e) => {
-  const email = document.querySelector('input[name="email"]').value;
-  if (!email.includes('@')) {
-    e.preventDefault();
-    alert('Please enter a valid email address.');
-  }
-});
 
 export default App;

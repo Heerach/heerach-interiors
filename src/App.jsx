@@ -89,42 +89,13 @@ const App = () => {
     );
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const phone = e.target.phone.value;
 
-    if (!name || !email || !phone) {
-      alert('All fields are required.');
-      return;
-    }
 
-    if (!email.includes('@')) {
-      alert('Please enter a valid email address.');
-      return;
-    }
+   
 
-    try {
-      const response = await fetch('https://your-backend.onrender.com/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, phone }),
-      });
+   
 
-      if (response.ok) {
-        alert('Form submitted successfully!');
-        e.target.reset();
-      } else {
-        alert('Failed to submit the form. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('An error occurred. Please try again later.');
-    }
-  };
+  
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -298,12 +269,13 @@ const App = () => {
 
         <div className="review-form">
           <h3>Leave a Review</h3>
-          <form onSubmit={handleReviewSubmit}>
-            <input type="text" name="name" placeholder="Your Name" required />
-            <input type="email" name="email" placeholder="Your Email" required />
-            <textarea name="review" placeholder="Your Review" rows="4" required></textarea>
-            <button type="submit">Submit Review</button>
-          </form>
+           <form action="https://formspree.io/f/manglkae" method="POST">
+  <input type="text" name="name" placeholder="Full Name" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="tel" name="phone" placeholder="Phone Number" required />
+  <button type="submit">Submit</button>
+</form>
+
         </div>
       </section>
 
@@ -311,19 +283,22 @@ const App = () => {
         <h2>Our Managers</h2>
         <ul>
           <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
-          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Mr. Mahesh</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Hyderabad</li>
+          <li><strong>Mr. Mahesh</strong> - 📞 +91 99887 7665, 📍 Suryapet</li>
         </ul>
       </section>
 
       <section id="contact" className="contact">
         <h2>Book a Free Consultation</h2>
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder="Full Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="tel" name="phone" placeholder="Phone Number" required />
-          <button type="submit">Submit</button>
-        </form>
+        <form action="https://formspree.io/f/manglkae" method="POST">
+  <input type="text" name="name" placeholder="Full Name" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="tel" name="phone" placeholder="Phone Number" required />
+  <button type="submit">Submit</button>
+
+
+</form>
+
       </section>
 
       <footer>

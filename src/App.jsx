@@ -310,9 +310,9 @@ const App = () => {
       <section className="manager-contact">
         <h2>Our Managers</h2>
         <ul>
-          <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 98765 4321, 📍 Bangalore</li>
-          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 91234 5678, 📍 Mumbai</li>
-          <li><strong>Mr. Mahesh</strong> - 📞 +91 99887 7665, 📍 Hyderabad</li>
+          <li><strong>Mr. Rupesh Raju</strong> - 📞 +91 996397112, 📍 Bangalore</li>
+          <li><strong>Mr. Achyuth Reddy</strong> - 📞 +91 7893663974, 📍 Hyderabad</li>
+          <li><strong>Mr. Mahesh</strong> - 📞 +91 9908946661, 📍 Suryapet</li>
         </ul>
       </section>
 
